@@ -12,6 +12,7 @@
   "sensor_3",
   "sensor_4",
   "scan_pipe_sr_no",
+  "scan_pipe_sr",
   "pipe_dim"
  ],
  "fields": [
@@ -66,8 +67,9 @@
   },
   {
    "fieldname": "pipe_dim",
-   "fieldtype": "Data",
-   "label": "Pipe Dim (mm)"
+   "fieldtype": "Link",
+   "label": "Pipe Dim (mm)",
+   "options": "Pipe Dim"
   },
   {
    "fieldname": "setup",
@@ -79,12 +81,17 @@
    "in_standard_filter": 1,
    "label": "Setup",
    "options": "Setup"
+  },
+  {
+   "fieldname": "scan_pipe_sr",
+   "fieldtype": "Data",
+   "label": "Scan Pipe Sr"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2024-11-28 13:03:50.682959",
+ "modified": "2024-11-28 13:33:33.631215",
  "modified_by": "Administrator",
  "module": "Lnt Defence",
  "name": "Setup List",
