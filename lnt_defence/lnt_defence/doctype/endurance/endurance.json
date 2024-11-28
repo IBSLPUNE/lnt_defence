@@ -1,0 +1,179 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-09-21 13:41:26.601761",
+ "default_view": "List",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "test_details_section",
+  "project_name",
+  "project_number",
+  "test_description",
+  "assembly_name",
+  "column_break_tdpu",
+  "qap_ref_no",
+  "total_no_of_pipes",
+  "performed_by",
+  "inspection_agency",
+  "column_break_kvbd",
+  "witnessed_by_1",
+  "witnessed_by_2",
+  "witnessed_by_3",
+  "section_break_fdjp",
+  "setup",
+  "section_break_ctfh",
+  "start",
+  "column_break_bcwz",
+  "stop",
+  "section_break_sbss",
+  "readings",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "test_details_section",
+   "fieldtype": "Section Break",
+   "label": "Test Details"
+  },
+  {
+   "fetch_from": "project_number.project_name",
+   "fieldname": "project_name",
+   "fieldtype": "Data",
+   "label": "Project Name"
+  },
+  {
+   "fieldname": "project_number",
+   "fieldtype": "Link",
+   "label": "Project Number",
+   "options": "Project"
+  },
+  {
+   "fieldname": "test_description",
+   "fieldtype": "Small Text",
+   "label": "Test Description"
+  },
+  {
+   "fieldname": "assembly_name",
+   "fieldtype": "Data",
+   "label": "Assembly Name"
+  },
+  {
+   "fieldname": "column_break_tdpu",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "qap_ref_no",
+   "fieldtype": "Data",
+   "label": "QAP ref no"
+  },
+  {
+   "fieldname": "total_no_of_pipes",
+   "fieldtype": "Data",
+   "label": "Total no of pipes / system"
+  },
+  {
+   "fieldname": "performed_by",
+   "fieldtype": "Data",
+   "label": "Performed by"
+  },
+  {
+   "fieldname": "inspection_agency",
+   "fieldtype": "Data",
+   "label": "Inspection Agency"
+  },
+  {
+   "fieldname": "column_break_kvbd",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "witnessed_by_1",
+   "fieldtype": "Data",
+   "label": "Witnessed by 1"
+  },
+  {
+   "fieldname": "witnessed_by_2",
+   "fieldtype": "Data",
+   "label": "Witnessed by 2"
+  },
+  {
+   "fieldname": "witnessed_by_3",
+   "fieldtype": "Data",
+   "label": "Witnessed by 3"
+  },
+  {
+   "fieldname": "section_break_ctfh",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "start",
+   "fieldtype": "Button",
+   "label": "Start"
+  },
+  {
+   "fieldname": "column_break_bcwz",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "stop",
+   "fieldtype": "Button",
+   "label": "Stop"
+  },
+  {
+   "fieldname": "section_break_sbss",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "readings",
+   "fieldtype": "Table",
+   "label": "Readings",
+   "options": "Reading"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Endurance",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "section_break_fdjp",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "setup",
+   "fieldtype": "Table",
+   "label": "Setup",
+   "options": "Setup List"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2024-11-28 13:05:25.201838",
+ "modified_by": "Administrator",
+ "module": "Lnt Defence",
+ "name": "Endurance",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}
