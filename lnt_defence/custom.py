@@ -1,7 +1,7 @@
-# import frappe
-# from PIL import Image
-# import pytesseract
-# import os
+import frappe
+from PIL import Image
+import pytesseract
+import os
 
 # def process_image(image_url):
 #     # Extract filename from URL
@@ -47,8 +47,10 @@
 #                 if extracted_text:
 #                     i.pipe_sr_no = extracted_text 
 #         doc.db_update()
-import frappe, pytesseract, os, random
+import os
+import frappe
 from PIL import Image
+import pytesseract
 
 @frappe.whitelist()
 def on_update(scan_pipe_sr_no):
@@ -58,18 +60,27 @@ def on_update(scan_pipe_sr_no):
         image_url = scan_pipe_sr_no
         filename = os.path.basename(image_url)
         full_image_file_path = os.path.join(frappe.get_site_path("private", "files"), filename)
-        
+
         try:
             if not os.path.exists(full_image_file_path):
                 frappe.throw(f"File not found: {full_image_file_path}")
-            
+
+            # Ensure Tesseract-OCR is installed and available in the path
+            pytesseract.pytesseract.tesseract_cmd = "/usr/bin/tesseract"  # Adjust path if needed
+
             img = Image.open(full_image_file_path)
             extracted_text = pytesseract.image_to_string(img)
-            
+
+            # Log the extracted text for debugging
+            frappe.logger().info(f"Extracted Text: {extracted_text}")
+
+            return extracted_text  # Returning extracted text
+
         except Exception as e:
             frappe.log_error(f"Failed to process image: {str(e)}")
-    
-    return extracted_text
+            frappe.throw(f"Error processing image: {str(e)}")
+
+
 @frappe.whitelist(allow_guest=True)
 def generate_random_values_for_rows():
     row_count = int(frappe.form_dict.get('row_count'))  # Extract 'row_count' from the request data
