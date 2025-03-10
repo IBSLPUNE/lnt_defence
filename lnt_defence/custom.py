@@ -51,7 +51,7 @@ import os
 import frappe
 from PIL import Image
 import pytesseract
-
+import random
 @frappe.whitelist()
 def on_update(scan_pipe_sr_no):
     extracted_text = ""
@@ -89,7 +89,8 @@ def generate_random_values_for_rows():
         readings.append({
             'reading_1': random.randint(0, 100),
             'reading_2': random.randint(0, 100),
-            'reading_3': random.randint(0, 100)
+            'reading_3': random.randint(0, 100),
+            'reading_4': random.randint(0, 100)
         })
     return readings
 
