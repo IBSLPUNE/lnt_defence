@@ -7,7 +7,8 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "setup"
+  "setup",
+  "sen"
  ],
  "fields": [
   {
@@ -21,11 +22,16 @@
    "label": "Setup",
    "options": "Sensor",
    "unique": 1
+  },
+  {
+   "fieldname": "sen",
+   "fieldtype": "Data",
+   "label": "Sen"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-11-28 13:10:01.716377",
+ "modified": "2025-03-11 10:42:40.147100",
  "modified_by": "Administrator",
  "module": "Lnt Defence",
  "name": "Setup",
