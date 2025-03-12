@@ -10,10 +10,8 @@ frappe.ui.form.on('Setup List', {
                     scan_pipe_sr_no: scanPipeSrNo
                 },
                 callback: function(response) {
-                    console.log(response);
                     if (response.message) {
                         frappe.model.set_value(cdt, cdn, 'scan_pipe_sr', response.message);
-                        console.log(response.message);
                     }
                 }
             });
@@ -49,7 +47,6 @@ frappe.ui.form.on("Endurance", {
                         if (Array.isArray(sensor_data)) {
                             setup_data.forEach((setup_row, index) => {
                                 let sensor_reading = sensor_data.find(data_row => data_row.sen === setup_row.sen);
-                                console.log(sensor_reading)
                                 if (sensor_reading) {
                                     let new_row = frm.add_child("readings");
                                     new_row.time = sensor_reading.time;

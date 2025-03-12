@@ -12,7 +12,6 @@ frappe.ui.form.on('Setup List', {
                 callback: function(response) {
                     if (response.message) {
                         frappe.model.set_value(cdt, cdn, 'scan_pipe_sr', response.message);
-                        console.log(response.message);
                     }
                 }
             });
