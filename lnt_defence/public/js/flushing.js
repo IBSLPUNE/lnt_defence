@@ -33,16 +33,12 @@ frappe.ui.form.on('Flushing', {
         // Start random value generation
         if (!frm.random_interval) {
             frm.random_interval = setInterval(() => {
-                $.ajax({
-                    url: "http://127.0.0.1:8000/api/method/lnt_defence.custom.generate_random_values_for_rows",
-                    method: "POST",
-                    data: {
+                frappe.call({
+                    method: "lnt_defence.custom.generate_random_values_for_rows",
+                    args: {
                         row_count: frm.doc.reading.length
                     },
-                    headers: {
-                        "X-Frappe-CSRF-Token": frappe.csrf_token
-                    },
-                    success: function(response) {
+                    callback: function(response) {
                         if (response.message) {
                             frm.doc.reading.forEach((row, index) => {
                                 frappe.model.set_value(row.doctype, row.name, 'reading_1', response.message[index].reading_1);
