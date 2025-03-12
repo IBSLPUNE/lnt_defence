@@ -4,6 +4,10 @@ app_publisher = "Lucky"
 app_description = "L & T Defence"
 app_email = "design@indibasolutions.com"
 app_license = "mit"
+
+# Hook this function to run after installation
+
+
 # required_apps = []
 
 # Includes in <head>
@@ -69,7 +73,6 @@ doctype_js = {"Flushing" : "public/js/flushing.js","Endurance":"public/js/endura
 
 # before_install = "lnt_defence.install.before_install"
 # after_install = "lnt_defence.install.after_install"
-after_install = "os.system('bash apps/lnt_defence/install.sh')"
 
 # Uninstallation
 # ------------
