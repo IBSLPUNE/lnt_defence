@@ -97,19 +97,25 @@ def generate_random_values_for_rows():
 import base64
 import requests
 import frappe
+import frappe
+import requests
+import base64
 @frappe.whitelist(allow_guest=True)
-
 def fetch_sensor_data(setup_data):
     try:
         if not setup_data:
             return {"error": "No setup data provided."}
 
-        setup_data = frappe.parse_json(setup_data)  # Ensure JSON data is parsed correctly
-        setup_length = len(setup_data)
-        sen_values = list(set(row["sen"] for row in setup_data if "sen" in row and row["sen"]))  # Unique sensor values
+        setup_data = frappe.parse_json(setup_data)
+        sensor_map = {}  # Map to link sensor fields (sensor_1, sensor_2) with actual sensor names
+        
+        for row in setup_data:
+            for key, value in row.items():
+                if key.startswith("sensor_") and value:
+                    sensor_map[key] = value  # Example: {'sensor_1': 'a0hex001', 'sensor_2': 'a0hex002'}
 
-        if not sen_values:
-            return {"error": "No sensor values found in setup."}
+        if not sensor_map:
+            return {"error": "No sensor fields found in setup data."}
 
         url = "https://e2e-60-5.ssdcloudindia.net:8086/query"
         username = "sisai"
@@ -118,10 +124,10 @@ def fetch_sensor_data(setup_data):
 
         readings = []
 
-        for sen in sen_values:
+        for sensor_field, sensor_name in sensor_map.items():
             params = {
                 "db": "Org_LnT",
-                "q": f"SELECT * FROM {sen} WHERE time >= now() - 1h"
+                "q": f"SELECT * FROM {sensor_name} WHERE time >= now() - 10m"
             }
             headers = {
                 "Authorization": f"Basic {credentials}",
@@ -129,36 +135,35 @@ def fetch_sensor_data(setup_data):
             }
 
             response = requests.get(url, params=params, headers=headers, timeout=10, verify=False)
+
             if response.status_code == 200:
                 result = response.json()
-                if "results" in result and result["results"][0].get("series"):
-                    values = result["results"][0]["series"][0]["values"]
+                series_data = result.get("results", [{}])[0].get("series", [])
 
-                    for index, data_row in enumerate(values[:setup_length]):
-                        if index >= len(setup_data):  # Avoid adding extra rows
-                            break
+                if series_data:
+                    columns = series_data[0].get("columns", [])
+                    values = series_data[0].get("values", [])
 
-                        row_data = {
-                            "time": data_row[0],
-                            "reading_1": data_row[1] if len(data_row) > 1 else None,
-                            "reading_2": data_row[2] if len(data_row) > 2 else None,
-                            "reading_3": data_row[3] if len(data_row) > 3 else None,
-                            "reading_4": data_row[4] if len(data_row) > 4 else None,
-                            "setup": setup_data[index]["setup"],  # Correct setup mapping
-                            "sen": setup_data[index]["sen"]
-                        }
+                    if "AI1" in columns:
+                        index_40100 = columns.index("AI1")
 
-                        readings.append(row_data)
-
-                else:
-                    readings.append({"error": f"No data found for sensor {sen}"})
-            else:
-                readings.append({"error": f"Failed to fetch data for sensor {sen}, Status: {response.status_code}"})
+                        for data_row in values:
+                            if index_40100 < len(data_row):
+                                readings.append({
+                                    "sensor_field": sensor_field,  # ✅ Map back to sensor_1, sensor_2, etc.
+                                    "sensor": sensor_name,
+                                    "time": data_row[0],
+                                    "40100": data_row[index_40100]
+                                })
 
         return readings
 
     except Exception as e:
-        return {"error": str(e)}
+        frappe.log_error(f"Error fetching sensor data: {str(e)}")
+        return {"error": f"An error occurred: {str(e)}"}
+
+
+
 
 
 

@@ -20,8 +20,8 @@ frappe.ui.form.on('Setup List', {
 });
 
 frappe.ui.form.on("Endurance", {
-    start: function(frm) {
-        frm.clear_table("readings");  // Clear readings before starting
+    start: function (frm) {
+        frm.clear_table("readings"); // Clear previous readings
 
         let setup_data = frm.doc.setup || [];
         if (!setup_data.length) {
@@ -34,32 +34,29 @@ frappe.ui.form.on("Endurance", {
             clearInterval(frm.data_interval);
         }
 
-        // Function to fetch and map data correctly
         function fetchData() {
             frappe.call({
-                method: "lnt_defence.custom.fetch_sensor_data", // Update with actual app path
+                method: "lnt_defence.custom.fetch_sensor_data",
                 args: { setup_data: setup_data },
-                callback: function(response) {
+                callback: function (response) {
                     if (response.message) {
-                        frm.clear_table("readings");  // Clear before adding new data
-                        let sensor_data = response.message; // API response
+                        frm.clear_table("readings"); // Clear before adding new data
+                        let sensor_data = response.message;
 
                         if (Array.isArray(sensor_data)) {
-                            setup_data.forEach((setup_row, index) => {
-                                let sensor_reading = sensor_data.find(data_row => data_row.sen === setup_row.sen);
-                                if (sensor_reading) {
-                                    let new_row = frm.add_child("readings");
-                                    new_row.time = sensor_reading.time;
-                                    new_row.reading_1 = sensor_reading.reading_1 || null;
-                                    new_row.reading_2 = sensor_reading.reading_2 || null;
-                                    new_row.reading_3 = sensor_reading.reading_3 || null;
-                                    new_row.reading_4 = sensor_reading.reading_4 || null;
-                                    new_row.setup = setup_row.setup;
-                                    new_row.sen = setup_row.sen;
-                                }
-                            });
+                            // Iterate over all setup sensors and match their readings
+                            setup_data.forEach((setup, index) => {
+                                let new_row = frm.add_child("readings");
+                                new_row.time = sensor_data[0]?.time || frappe.datetime.now_datetime(); // Use latest time or current
 
-                            frm.refresh_field("readings");
+                                // Assign each reading to its corresponding sensor
+                                new_row.reading_1 = sensor_data.find(d => d.sensor === setup.sensor_1)?.["40100"] || null;
+                                new_row.reading_2 = sensor_data.find(d => d.sensor === setup.sensor_2)?.["40100"] || null;
+                                new_row.reading_3 = sensor_data.find(d => d.sensor === setup.sensor_3)?.["40100"] || null;
+                                new_row.reading_4 = sensor_data.find(d => d.sensor === setup.sensor_4)?.["40100"] || null;
+
+                                frm.refresh_field("readings");
+                            });
                         } else {
                             frappe.msgprint("Invalid data format received.");
                         }
@@ -68,16 +65,14 @@ frappe.ui.form.on("Endurance", {
             });
         }
 
-        // Initial fetch and set interval
-        fetchData();
+        // Fetch data every 5 seconds
         frm.data_interval = setInterval(fetchData, 5000);
     },
 
-    stop: function(frm) {
+    stop: function (frm) {
         if (frm.data_interval) {
             clearInterval(frm.data_interval);
-            frm.data_interval = null;
-            frappe.msgprint("Data fetching stopped.");
+            delete frm.data_interval;
         }
     }
 
