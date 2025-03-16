@@ -94,9 +94,7 @@ def generate_random_values_for_rows():
         })
     return readings
 
-import base64
-import requests
-import frappe
+
 import frappe
 import requests
 import base64

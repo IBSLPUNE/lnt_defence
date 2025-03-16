@@ -1,19 +1,22 @@
 {
  "actions": [],
  "allow_rename": 1,
+ "autoname": "naming_series:",
  "creation": "2024-11-28 12:07:54.684688",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
   "test_details_section",
-  "project_name",
   "project_number",
+  "project_name",
   "test_description",
   "assembly_name",
+  "naming_series",
   "column_break_arps",
   "qap_ref_no",
   "total_no_of_pipes",
   "performed_by",
+  "performed_by_name",
   "inspection_agency",
   "column_break_xvqt",
   "witnessed_by_1",
@@ -63,8 +66,9 @@
   },
   {
    "fieldname": "test_description",
-   "fieldtype": "Small Text",
-   "label": "Test Description"
+   "fieldtype": "Link",
+   "label": "Test Description",
+   "options": "Test Description"
   },
   {
    "fieldname": "assembly_name",
@@ -93,8 +97,9 @@
   },
   {
    "fieldname": "inspection_agency",
-   "fieldtype": "Data",
-   "label": "Inspection Agency"
+   "fieldtype": "Link",
+   "label": "Inspection Agency",
+   "options": "Supplier"
   },
   {
    "fieldname": "column_break_xvqt",
@@ -122,7 +127,7 @@
   {
    "fieldname": "setup",
    "fieldtype": "Table",
-   "label": "Setup",
+   "label": "Configration",
    "options": "Setup List"
   },
   {
@@ -146,17 +151,31 @@
   {
    "fieldname": "reading",
    "fieldtype": "Table",
-   "label": "Reading",
+   "label": "Live readings ",
    "options": "Reading"
+  },
+  {
+   "fetch_from": "performed_by.full_name",
+   "fieldname": "performed_by_name",
+   "fieldtype": "Data",
+   "label": "Performed By Name"
+  },
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "hidden": 1,
+   "label": "Series",
+   "options": "FLU-.FY.-"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-11-28 13:07:08.366034",
+ "modified": "2025-03-16 19:27:10.863119",
  "modified_by": "Administrator",
  "module": "Lnt Defence",
  "name": "Flushing",
+ "naming_rule": "By \"Naming Series\" field",
  "owner": "Administrator",
  "permissions": [
   {
